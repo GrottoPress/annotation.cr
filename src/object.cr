@@ -11,7 +11,9 @@ class Object
         \{% end %}
       \{% end %}
 
-      \{% if @type.superclass.methods.any? { |m| m == method && m.annotation(Final) } %}
+      \{% if @type.superclass.methods.any? { |m|
+        m == method && m.annotation(Final)
+      } %}
         \{% raise "Cannot override final method '#{method.name}'" %}
       \{% end %}
     end
