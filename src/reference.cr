@@ -1,4 +1,4 @@
-class Object
+class Reference
   macro inherited
     {% if @type.superclass.annotation(Final) %}
       {% raise "Cannot inherit final type '#{@type.superclass.name}'" %}
