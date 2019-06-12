@@ -53,7 +53,7 @@ end
 
 class Child < Parent
   @[Override]
-  def non_existent # Oops! Trying to override non-existent method 'non_exitent'
+  def non_existent # Oops! Trying to override non-existent method 'non_existent'
   end
 
   @[Override]
