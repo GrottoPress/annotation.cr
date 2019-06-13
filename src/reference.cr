@@ -8,15 +8,29 @@ class Reference
 
     macro method_added(method)
       \{% if method.annotation(Override) %}
-        \{% if !@type.ancestors.any? &.methods.includes?(method) %}
-          \{% raise "Trying to override non-existent method '#{method.name}'" %}
+        \{% if !@type.ancestors.any? &.methods.any? { |m|
+          m.name == method.name &&
+          m.args == method.args &&
+          m.return_type == method.return_type
+        } %}
+          \{% raise "Attempt to override non-existent method `\
+            #{method.name}(#{method.args.join(", ").id})\
+            #{method.return_type ? \
+            " : #{method.return_type.id }".id : "".id}`" %}
         \{% end %}
       \{% end %}
 
-      \{% if @type.superclass.methods.any? { |m|
-        m == method && m.annotation(Final)
+      \{% if @type.ancestors.any? &.methods.any? { |m|
+        m.annotation(Final) &&
+        m.name == method.name &&
+        m.args.map &.restriction == method.args.map &.restriction &&
+        m.return_type == method.return_type
       } %}
-        \{% raise "Cannot override final method '#{method.name}'" %}
+        \{% raise "Attempt to override final method `\
+          #{m.name}(#{m.args.join(", ").id})\
+          #{m.return_type ? " : #{m.return_type.id}".id : "".id}` with `\
+          #{method.name}(#{method.args.join(", ").id})\
+          #{method.return_type ? " : #{method.return_type.id}".id : "".id}`" %}
       \{% end %}
     end
   end
