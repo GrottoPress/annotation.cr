@@ -4,8 +4,23 @@ Crystal supports user-defined annotations. This shard leverages this capability 
 
 Annotations supported include:
 
-- `Final`: Marks a type or method as final. Final types cannot be inheritted, final methods cannot be overridden.
-- `Override`: Marks a method as overriding an existing method in it's super class. This means a mistyped method name in the subclass gives a compile-time error, instead of being silently added as a new method.
+### `@[Final]`
+
+Marks a type or method as final. Final types cannot be inheritted, final methods cannot be overridden.
+
+The inheriting method should have the same type signature as the inherited method, in order for this annotation to prevent the override.
+
+This means the argument types and order, and the return type should be the same for the inheriting method as for the inherited method.
+
+A difference in type signature of the methods is considered an overload, not an override.
+
+### `@[Override]`
+
+Marks a method as overriding an existing method in it's super class. This means a mistyped method name in the subclass gives a compile-time error, instead of being silently added as a new method.
+
+The inheriting method should have the same name and type signature as the inherited method, in order for this annotation to ensure an override.
+
+This means the argument names, types and order, and the return type should be the same for the inheriting method as it is for the inherited method.
 
 ## Installation
 
@@ -22,42 +37,76 @@ dependencies:
 ```crystal
 require "annotation"
 
+##
 # 'Final' class
+##
 
 @[Final]
 class Parent
 end
 
-class Child < Parent # Oops! Cannot inherit final type 'Parent'
+# Error!: Cannot inherit final type
+class Child < Parent
 end
 
+##
 # 'Final' method
+##
 
 class Parent
   @[Final]
-  def final_method
+  def final_method(a : String) : Nil
   end
 end
 
 class Child < Parent
-  def final_method # Oops! Cannot override final method 'final_method'
+  # OK: This is an overload
+  def final_method(c : UInt8) : Bool
+  end
+
+  # OK: This is an overload
+  def final_method(a : String, b : String) : Nil
+  end
+
+  # Error!: Cannot override final method
+  def final_method(a : String) : Nil
+  end
+
+  # Error!: Cannot override final method
+  def final_method(b : String) : Nil
   end
 end
 
+##
 # 'Override'
+##
 
 class Parent
-  def my_method
+  def my_method(a : String) : Nil
   end
 end
 
 class Child < Parent
+  # OK
   @[Override]
-  def non_existent # Oops! Trying to override non-existent method 'non_existent'
+  def my_method(a : String) : Nil
   end
 
+  # Error!: Method must exist
   @[Override]
-  def my_method # Good to go!
+  def non_existent
+  end
+
+  # Error!: Return types must match
+  @[Override]
+  def my_method(a : String) : Bool
+    false
+  end
+
+  # Error!: Argument names must match
+  @[Override]
+  def my_method(b : String) : Nil
+    false
   end
 end
 ```
