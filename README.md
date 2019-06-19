@@ -98,15 +98,15 @@ class Child < Parent
   def non_existent
   end
 
-  # Error!: Return types must match
+  # OK
   @[Override]
   def my_method(a : String) : Bool
     false
   end
 
-  # Error!: Argument names must match
+  # OK
   @[Override]
-  def my_method(b : String) : Nil
+  def my_method(b : String) : Bool
     false
   end
 end
