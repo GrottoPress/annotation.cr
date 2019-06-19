@@ -8,19 +8,19 @@ Annotations supported include:
 
 Marks a type or method as final. Final types cannot be inheritted, final methods cannot be overridden.
 
-The inheriting method should have the same type signature as the inherited method, in order for this annotation to prevent the override.
+The inheriting method should have the same type restrictions as the inherited method, in order for this annotation to prevent the override.
 
-This means the argument types and order, and the return type should be the same for the inheriting method as for the inherited method.
+This means the parameter types and order should be the same for the inheriting method as for the inherited method.
 
-A difference in type signature of the methods is considered an overload, not an override.
+A difference in type restrictions of the parameters is considered an overload, not an override.
 
 ### `@[Override]`
 
 Marks a method as overriding an existing method in it's super class. This means a mistyped method name in the subclass gives a compile-time error, instead of being silently added as a new method.
 
-The inheriting method should have the same name and type signature as the inherited method, in order for this annotation to ensure an override.
+The inheriting method should have the same name and type restrictions as the inherited method, in order for this annotation to ensure an override.
 
-This means the argument names, types and order, and the return type should be the same for the inheriting method as it is for the inherited method.
+This means the parameter names, types and order should be the same for the inheriting method as it is for the inherited method.
 
 ## Installation
 
@@ -73,7 +73,8 @@ class Child < Parent
   end
 
   # Error!: Cannot override final method
-  def final_method(b : String) : Nil
+  def final_method(b : String) : Bool
+    true
   end
 end
 
