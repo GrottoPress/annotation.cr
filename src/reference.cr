@@ -10,8 +10,7 @@ class Reference
       \{% if method.annotation(Override) %}
         \{% if !@type.ancestors.any? &.methods.any? { |m|
           m.name == method.name &&
-          m.args == method.args &&
-          m.return_type == method.return_type
+          m.args.map &.restriction == method.args.map &.restriction
         } %}
           \{% raise "Attempt to override non-existent method `\
             #{method.name}(#{method.args.join(", ").id})\
@@ -23,8 +22,7 @@ class Reference
       \{% if @type.ancestors.any? &.methods.any? { |m|
         m.annotation(Final) &&
         m.name == method.name &&
-        m.args.map &.restriction == method.args.map &.restriction &&
-        m.return_type == method.return_type
+        m.args.map &.restriction == method.args.map &.restriction
       } %}
         \{% raise "Attempt to override final method `\
           #{m.name}(#{m.args.join(", ").id})\
