@@ -1,11 +1,11 @@
 name: annotation
-version: 0.3.0
+version: 0.3.2
 
 authors:
   - GrottoPress <info@grottopress.com>
   - N Atta Kusi Adusei <attakusiadusei@gmail.com>
 
-crystal: 0.29.0
+crystal: 0.30.1
 
 license: MIT
 
