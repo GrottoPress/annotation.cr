@@ -22,7 +22,8 @@ class Reference
       \{% if @type.ancestors.any? &.methods.any? { |m|
         m.annotation(Final) &&
         m.name == method.name &&
-        m.args.map &.restriction == method.args.map &.restriction
+        m.args.map &.restriction == method.args.map &.restriction &&
+        !m.stringify.starts_with?("abstract ")
       } %}
         \{% raise "Attempt to override final method `\
           #{m.name}(#{m.args.join(", ").id})\
