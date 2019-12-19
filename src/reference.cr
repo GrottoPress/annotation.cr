@@ -1,6 +1,6 @@
 class Reference
   macro inherited
-    {% if !@type.superclass.abstract? %}
+    {% unless @type.superclass.abstract? %}
       {% if @type.superclass.annotation(Final) %}
         {% raise "Cannot inherit final type `#{@type.superclass.name}`" %}
       {% end %}
