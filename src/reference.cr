@@ -8,10 +8,10 @@ class Reference
 
     macro method_added(method)
       \{% if method.annotation(Override) %}
-        \{% if !@type.ancestors.any? &.methods.any? { |m|
+        \{% if !@type.ancestors.any? &.methods.any? do |m|
           m.name == method.name &&
           m.args.map &.restriction == method.args.map &.restriction
-        } %}
+        end %}
           \{% raise "Attempt to override non-existent method `\
             #{method.name}(#{method.args.join(", ").id})\
             #{method.return_type ? \
@@ -19,12 +19,12 @@ class Reference
         \{% end %}
       \{% end %}
 
-      \{% if @type.ancestors.any? &.methods.any? { |m|
+      \{% if @type.ancestors.any? &.methods.any? do |m|
         m.annotation(Final) &&
         m.name == method.name &&
         m.args.map &.restriction == method.args.map &.restriction &&
         !m.stringify.starts_with?("abstract ")
-      } %}
+      end %}
         \{% raise "Attempt to override final method `\
           #{m.name}(#{m.args.join(", ").id})\
           #{m.return_type ? " : #{m.return_type.id}".id : "".id}` with `\
