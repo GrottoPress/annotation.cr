@@ -10,26 +10,28 @@ class Reference
       \{% if method.annotation(Override) %}
         \{% if !@type.ancestors.any? &.methods.any? do |m|
           m.name == method.name &&
-          m.args.map &.restriction == method.args.map &.restriction
+          m.args.map &.restriction.resolve ==
+            method.args.map &.restriction.resolve
         end %}
           \{% raise "Attempt to override non-existent method `\
             #{method.name}(#{method.args.join(", ").id})\
             #{method.return_type ? \
-            " : #{method.return_type.id }".id : "".id}`" %}
+            " : #{method.return_type }".id : "".id}`" %}
         \{% end %}
       \{% end %}
 
       \{% if @type.ancestors.any? &.methods.any? do |m|
         m.annotation(Final) &&
         m.name == method.name &&
-        m.args.map &.restriction == method.args.map &.restriction &&
+        m.args.map &.restriction.resolve ==
+          method.args.map &.restriction.resolve &&
         !m.stringify.starts_with?("abstract ")
       end %}
         \{% raise "Attempt to override final method `\
           #{m.name}(#{m.args.join(", ").id})\
-          #{m.return_type ? " : #{m.return_type.id}".id : "".id}` with `\
+          #{m.return_type ? " : #{m.return_type}".id : "".id}` with `\
           #{method.name}(#{method.args.join(", ").id})\
-          #{method.return_type ? " : #{method.return_type.id}".id : "".id}`" %}
+          #{method.return_type ? " : #{method.return_type}".id : "".id}`" %}
       \{% end %}
     end
   end
