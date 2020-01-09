@@ -16,7 +16,7 @@ class Reference
           \{% raise "Attempt to override non-existent method `\
             #{method.name}(#{method.args.join(", ").id})\
             #{method.return_type ? \
-            " : #{method.return_type.id }".id : "".id}`" %}
+            " : #{method.return_type }".id : "".id}`" %}
         \{% end %}
       \{% end %}
 
@@ -29,9 +29,9 @@ class Reference
       end %}
         \{% raise "Attempt to override final method `\
           #{m.name}(#{m.args.join(", ").id})\
-          #{m.return_type ? " : #{m.return_type.id}".id : "".id}` with `\
+          #{m.return_type ? " : #{m.return_type}".id : "".id}` with `\
           #{method.name}(#{method.args.join(", ").id})\
-          #{method.return_type ? " : #{method.return_type.id}".id : "".id}`" %}
+          #{method.return_type ? " : #{method.return_type}".id : "".id}`" %}
       \{% end %}
     end
   end
