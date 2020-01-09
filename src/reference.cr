@@ -10,7 +10,8 @@ class Reference
       \{% if method.annotation(Override) %}
         \{% if !@type.ancestors.any? &.methods.any? do |m|
           m.name == method.name &&
-          m.args.map &.restriction == method.args.map &.restriction
+          m.args.map &.restriction.resolve ==
+            method.args.map &.restriction.resolve
         end %}
           \{% raise "Attempt to override non-existent method `\
             #{method.name}(#{method.args.join(", ").id})\
@@ -22,7 +23,8 @@ class Reference
       \{% if @type.ancestors.any? &.methods.any? do |m|
         m.annotation(Final) &&
         m.name == method.name &&
-        m.args.map &.restriction == method.args.map &.restriction &&
+        m.args.map &.restriction.resolve ==
+          method.args.map &.restriction.resolve &&
         !m.stringify.starts_with?("abstract ")
       end %}
         \{% raise "Attempt to override final method `\
