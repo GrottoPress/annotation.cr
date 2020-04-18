@@ -76,6 +76,11 @@ class Child < Parent
   def final_method(b : String) : Bool
     true
   end
+
+  # Error!: Cannot override final method
+  def final_method(c) : Bool
+    true
+  end
 end
 
 ##
@@ -93,9 +98,9 @@ class Child < Parent
   def my_method(a : String) : Nil
   end
 
-  # Error!: Method must exist
+  # OK
   @[Override]
-  def non_existent
+  def my_method(b)
   end
 
   # OK
@@ -108,6 +113,21 @@ class Child < Parent
   @[Override]
   def my_method(b : String) : Bool
     false
+  end
+
+  # Error!: Method must exist
+  @[Override]
+  def non_existent
+  end
+
+  # Error!: This an overload
+  @[Override]
+  def my_method(a, b)
+  end
+
+  # Error!: This an overload
+  @[Override]
+  def my_method(a : Int32) : Nil
   end
 end
 ```
