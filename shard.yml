@@ -3,11 +3,10 @@ version: 0.4.0
 
 authors:
   - GrottoPress <info@grottopress.com>
-  - N Atta Kusi Adusei <attakusiadusei@gmail.com>
+  - N Atta Kusi Adusei
 
-crystal: 1.0.0
+crystal: ~> 1.0
 
 license: MIT
 
-description: |
-  Add annotations to Crystal
+description: Add annotations to Crystal
