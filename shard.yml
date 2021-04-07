@@ -1,5 +1,6 @@
 name: annotation
 version: 0.5.0
+description: Crystal annotations
 
 authors:
   - GrottoPress <info@grottopress.com>
@@ -8,5 +9,3 @@ authors:
 crystal: ~> 1.0
 
 license: MIT
-
-description: Add annotations to Crystal
